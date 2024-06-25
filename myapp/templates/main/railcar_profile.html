@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    Railcar Overview - Your App
+{% endblock %}
+
+{% block content %}
+<h1 style="font-size: 1.5em;">Railcar Overview</h1>
+
+{% for railcar in railcars %}
+    <div>
+        <h2 style="font-size: .8em;">Railcar Number: {{ railcar.railcar_number }}</h2>
+        <p style="font-size: .8em;">Customer: {{ railcar.customer.name }}</p>
+        <p style="font-size: .8em;">Received Date: {{ railcar.received_date }}</p>
+        <p style="font-size: .8em;">Released Date: {{ railcar.released_date }}</p>
+        <p style="font-size: .8em;">Status: {{ railcar.status }}</p>
+    </div>
+    <hr>
+{% empty %}
+    <p>No railcar instances found.</p>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,16 @@
+<!-- railcar_management/templates/create_railcar.html -->
+<!-- railcar_management/templates/create_railcar.html -->
+{% extends 'main/base.html' %}
+
+{% block content %}
+  <h2>Create Railcar</h2>
+  <form method="post" action="{% url 'create_railcar' %}">
+    {% csrf_token %}
+    
+    <!--{{ customer_form.as_p }}-->
+    {{ railcar_form.as_p }}
+    
+    <button type="submit">Create Railcar</button>
+  </form>
+  <a href="{% url 'railcar_list_in_yard' %}">Back to Railcar List</a>
+{% endblock %}

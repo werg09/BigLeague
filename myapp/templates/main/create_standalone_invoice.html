@@ -1,0 +1,21 @@
+<!-- templates/main/create_standalone_invoice.html -->
+
+{% extends "main/base.html" %}
+
+{% block content %}
+  <h2>Create Standalone Invoice</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ formset.management_form }}
+    {% for form in formset %}
+        {{ form.as_table }}
+    {% endfor %}
+
+    <button type="submit">Create Invoice</button>
+  </form>
+{% endblock %}
+
+
+
+

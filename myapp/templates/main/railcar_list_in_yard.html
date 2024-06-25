@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block title %}All Railcars in Yard{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 style="font-size: 1.5em;">All Railcars in Yard</h2>
+        {% if railcars %}
+            <ul class="list-group">
+                {% for railcar in railcars %}
+                    <li class="list-group-item" style="padding: 10px;">
+                        <div style="font-size: 0.9em;">{{ railcar.railcar_number }} - {{ railcar.customer.name }}</div>
+                        <span class="float-end">
+                            {% if perms.myapp.view_railcar %}
+                                <a href="{% url 'railcar_detail' pk=railcar.pk %}" class="btn btn-info btn-sm" style="font-size: smaller;">Detail</a>
+                            {% endif %}
+                            {% if perms.myapp.view_railcar %}
+                                <a href="{% url 'edit_railcar' pk=railcar.pk %}" class="btn btn-warning btn-sm" style="font-size: smaller;">Edit</a>
+                            {% endif %}
+                            {% if request.user.is_superuser %}
+                                <a href="{% url 'delete_railcar' pk=railcar.pk %}" class="btn btn-danger btn-sm" style="font-size: smaller;">Delete</a>
+                            {% endif %}
+                            <a href="{% url 'release_railcar' pk=railcar.pk %}" class="btn btn-success btn-sm" style="font-size: smaller;">Release</a>
+                            <!--{% if railcar.customer.name == "Bruning Grain Farm" %}
+                                <a href="{% url 'release_railcar' pk=railcar.pk %}" class="btn btn-sm" style="font-size: smaller; background-color: indigo; color: white;">Corn-Detail</a>
+                            {% endif %}-->
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No railcars in the yard.</p>
+        {% endif %}
+        <!-- Check if the user has the 'add_railcar' permission -->
+        {% if perms.myapp.add_railcar %}
+        <a href="{% url 'create_railcar' %}" class="btn btn-primary" style="font-size: smaller;">Create New Railcar</a>
+        {% endif %}
+    </div>
+{% endblock %}

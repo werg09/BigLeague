@@ -1,0 +1,12 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <h1>Invoice #{{ invoice.invoice_number }}</h1>
+    {% if not invoice.is_paid %}
+        <p>Would you like to upload proof of payment?</p>
+        <button type="button" onclick="location.href='{% url 'upload_proof' invoice.invoice_number %}'">Yes</button>
+        <button type="button" onclick="location.href='{% url 'invoice_final' invoice.invoice_number %}'">No</button>
+    {% else %}
+        <p>This invoice has been paid.</p>
+    {% endif %}
+{% endblock %}

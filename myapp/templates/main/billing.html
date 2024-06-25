@@ -1,0 +1,56 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    Billing - Your App
+{% endblock %}
+
+{% block content %}
+<h1 style="font-size: 1.5em;">Billing</h1>
+    <table style="width: 80%; border-collapse: collapse;">
+    <form method="GET" action="{% url 'railcar_search' %}">
+    <input type="text" name="search" placeholder="Search by railcar number" value="{{ request.GET.search|default:'' }}">
+    <input type="submit" value="Search">
+</form>
+        <thead>
+            <tr>
+                <th style="border-bottom: 1px solid #ccc; padding: 10px 0; font-size: 0.9em;">Invoice #</th>
+                <th style="border-bottom: 1px solid #ccc; padding: 10px 0; font-size: 0.9em;">Customer</th>
+                <th style="border-bottom: 1px solid #ccc; padding: 10px 0; font-size: 0.9em;">Railcar #</th>
+                <th style="border-bottom: 1px solid #ccc; padding: 10px 0; font-size: 0.9em;">Issued</th>
+                <th style="border-bottom: 1px solid #ccc; padding: 10px 0; font-size: 0.9em;">Due Date</th>
+                <th style="border-bottom: 1px solid #ccc; padding: 10px 0; font-size: 0.9em;">Total Amount Due</th>
+                <th style="border-bottom: 1px solid #ccc; padding: 10px 0; font-size: 0.9em;">Action</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for invoice in invoices %}
+                <tr>
+                    <td style="padding: 10px 0; font-size: 1.0em;">{{ invoice.invoice_number }}</td>
+                    <td style="padding: 10px 0; font-size: 0.9em;">{{ invoice.customer.name }}</td>
+                    <td style="padding: 10px 0; font-size: 0.9em;">{{ invoice.railcar.railcar_number }}</td>
+                    <td style="padding: 10px 0; font-size: 0.9em;">{{ invoice.issue_date }}</td>
+                    <td style="padding: 10px 0; font-size: 0.9em;">{{ invoice.due_date }}</td>
+                    <td style="padding: 10px 0; font-size: 0.9em;">{{ invoice.total_amount_due }}</td>
+                    <td style="padding: 10px 0; font-size: 0.9em;">
+                        {% if not invoice.email_sent %}
+                            <button type="button" onclick="window.location.href='{% url 'invoice_final' invoice.invoice_number %}'">Invoice</button>
+                        {% else %}
+                            <button type="button" style="background-color: red;" onclick="window.location.href='{% url 'invoice_final' invoice.invoice_number %}'">Re-Invoice</button>
+                        {% endif %}
+
+                        {% if invoice.is_paid %}
+                            <button type="button" style="background-color: green;"onclick="window.location.href='{% url 'unpaid_invoice' invoice.invoice_number %}'">Paid</button>
+                        {% else %}
+                            <button type="button" style="background-color: yellow;" onclick="window.location.href='{% url 'unpaid_invoice' invoice.invoice_number %}'">Unpaid</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" style="padding: 10px 0; font-size: 0.8em;">No invoices found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h2>All Tanks</h2>
+        <a href="{% url 'create_tank' %}" class="btn btn-primary">Create Tank</a>
+        {% if tanks %}
+            <ul class="list-group">
+                {% for tank in tanks %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>Tank Number: {{ tank.tank_number }}</div>
+                        <!-- Add more fields as needed -->
+                        <form method="post" action="{% url 'delete_tank' tank.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>There are no tanks.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice {{ invoice.invoice_number }}</title>
+</head>
+<body>
+    <h1>Invoice {{ invoice.invoice_number }}</h1>
+    <p>Date: {{ invoice.issue_date }}</p>
+    <p>Customer: {{ invoice.customer }}</p>
+    <p>Total Amount: {{ invoice.total_amount_due }}</p>
+
+    <h2>Items</h2>
+    <ul>
+    {% for item in invoice.invoiceitem_set.all %}
+        <li>
+            <p>Product: {{ item.description }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Price: {{ item.price_per_unit }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+</body>
+</html>
+{% endblock %}

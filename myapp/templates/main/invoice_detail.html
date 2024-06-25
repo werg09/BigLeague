@@ -1,0 +1,99 @@
+{% load static %}
+{% block title %}
+    Invoice Detail - FerZa
+{% endblock %}
+
+{% block content %}
+
+<div style="margin: 20px auto; max-width: 600px; font-family: Arial, sans-serif; border: 1px solid #ccc; padding: 20px;">
+    <!-- Back button -->
+    <button type="button" class="btn btn-primary no-print" onclick="window.location.href='{% url 'outbound' %}' ">Go Back</button>
+
+    <!-- Existing content... -->
+
+    <!-- Print button -->
+    <style>
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+
+    <div style="margin: 20px auto; max-width: 600px; font-family: Arial, sans-serif; border: 1px solid #ccc; padding: 20px;">
+        <!-- Logo -->
+        <div style="float: left; margin-right: 20px;">
+            <img src="{% static 'main/logo.png' %}" alt="Logo" style="max-width: 150px;">
+            <div style="font-size: 14px; margin-top: 10px; line-height: 1.2; border: 1px solid transparent; padding: 5px;">
+                <p style="margin: 0;"><strong>Seller Name:</strong> {{ invoice.seller_name }}</p>
+                <p style="margin: 0;"><strong>Seller Address:</strong> {{ invoice.seller_address }}</p>
+                <p style="margin: 0;"><strong>Seller Contact:</strong> {{ invoice.seller_contact }}</p>
+            </div>
+            <!-- Customer Info -->
+            <div style="font-size: 14px; margin-top: 20px; line-height: 1.2; border: 1px solid transparent; padding: 5px;">
+                <p style="margin: 0;"><strong>Customer Name:</strong> {{ invoice.customer.name }}</p>
+                <p style="margin: 0;"><strong>Customer Address:</strong> {% if invoice.customer.customer_address %}{{ invoice.customer.customer_address }}{% else %}No address provided.{% endif %}</p>
+                <p style="margin: 0;"><strong>Customer Contact:</strong> {% if invoice.customer.customer_contact %}{{ invoice.customer.customer_contact }}{% else %}No contact provided.{% endif %}</p>
+            </div>
+        </div>
+        
+        <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                <div style="flex: 1;">
+                    <div style="text-align: right; font-size: 14px; line-height: 1.2; border: 1px solid transparent; padding: 5px;">
+                        <h2 style="margin: 0; font-size: 20px;">Invoice {{ invoice.invoice_number }}</h2>
+                        <p style="margin: 0;"><strong>Issue Date:</strong> {{ invoice.issue_date }}</p>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <p><strong>Railcar:</strong> {{ invoice.railcar.railcar_number }}</p>
+            </div>
+            <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="border-bottom: 1px solid #ccc; padding: 10px 0;">Description</th>
+                        <th style="border-bottom: 1px solid #ccc; padding: 10px 0; text-align: right;">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 10px 0;">Demurrage Charge</td>
+                        <td style="padding: 10px 0; text-align: right;">${{ invoice.railcar.demurragecharge_set.first.demurrage_charge|default:"0.00" }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px 0;">Entrance Fee</td>
+                        <td style="padding: 10px 0; text-align: right;">${{ invoice.customer.entrance_fee }}</td>
+                    </tr>
+                    {% if invoice.customer.rate_per_pound != 0 %}
+                     <tr>
+                        <td style="padding: 10px 0;">Net Sugar Pound</td>
+                        <td style="padding: 10px 0;">
+                            <div style="float: left;">{{ invoice.railcar.net_weight }} X {{invoice.railcar.customer.rate_per_pound}}</div>
+                             <div style="float: right;">${{ net_sugar_pound }}</div>
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="padding: 10px 0; text-align: right;"><strong>Total Amount Due:</strong></td>
+                        <td style="padding: 10px 0; text-align: right;"><strong>{{ invoice.total_amount_due }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        
+        <div style="clear: both;"></div>
+        <!-- Print button -->
+        <style>
+            @media print {
+                .no-print {
+                    display: none;
+                }
+            }
+        </style>
+        
+        <button type="submit" class="btn btn-success no-print" onclick="window.print()">Print</button>
+    
+{% endblock %}

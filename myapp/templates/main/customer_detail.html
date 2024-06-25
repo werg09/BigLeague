@@ -1,0 +1,9 @@
+<!-- customer_detail.html -->
+{% extends 'main/base.html' %}
+
+{% block content %}
+  <h2>Customer Details</h2>
+  <p>Customer PK: {{ customer.pk }}</p>
+  <!-- Display other railcar details as needed -->
+  <a href="{% url 'edit_customer' pk=customer.pk %}">Edit Customer</a>
+{% endblock %}

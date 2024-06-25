@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    Home - FT & R Inc.
+{% endblock %}
+
+{% block content %}
+    <h1 style="font-size: 1.5em;">Welcome to FT & R Inc, {{ user.username }}!</h1>
+    {% if customer %}
+        <h3 style="font-size: 0.9em;"> {{ customer.name }} DASHBOARD</h3>
+    {% endif %}
+    <!-- Add a button to navigate to the railcar_list view -->
+    <a class="btn btn-primary" href="{% url 'railcar_list_in_yard' %}" style="font-size: smaller;">Railcars In Yard</a>
+    
+    <!-- Add a button to navigate to the create_user_profile view -->
+    {% if user.is_superuser %}
+        <a class="btn btn-primary" href="{% url 'create_user_profile' %}" style="font-size: smaller;">Create User Profile</a>
+    {% endif %}
+    
+    <!-- Check if the user has the 'view_customer' permission -->
+    {% if perms.myapp.view_customer %}
+        <a class="btn btn-primary" href="{% url 'customers_list' %}" style="font-size: smaller;">Customer List</a>
+    {% endif %}
+{% endblock %}

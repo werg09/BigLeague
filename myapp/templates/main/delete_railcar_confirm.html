@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Confirm Deletion{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Confirm Deletion</h2>
+        <p>Are you sure you want to delete Railcar {{ railcar.railcar_number }}?</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete" class="btn btn-danger">
+        </form>
+        <a href="{% url 'railcar_list_in_yard' %}" class="btn btn-secondary">Cancel</a>
+    </div>
+{% endblock %}
+
+
