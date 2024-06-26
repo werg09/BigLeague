@@ -2,7 +2,8 @@ version : 0.1
 
 endpoints:
   - name: "REST API"
-    port: 8000
+    port: 9090
     type: REST
     networkVisablity: Public
     context: /
+    schemaFilePath: openapi.yaml
