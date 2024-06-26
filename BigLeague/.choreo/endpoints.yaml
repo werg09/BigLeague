@@ -6,3 +6,4 @@ endpoints:
     type: REST
     networkVisablity: Public
     context: /
+    schemaFilePath: openapi.yaml
