@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    Edit Customer - Big League
+{% endblock %}
+
+{% block content %}
+  <h2>Edit Customer</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save changes</button>
+  </form>
+  <p><a href="{% url 'customers_list' %}">Cancel</a></p>
+{% endblock %}

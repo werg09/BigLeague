@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    All Customers in Big League
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 style="font-size: 1.5em;">All Customers</h2>
+        {% if customers %}
+            <ul class="list-group">
+                {% for customer in customers %}
+                    <li class="list-group-item" style="padding: 10px;">
+                        <div style="font-size: 0.9em;">{{ customer.name }} - {{ customer.entrance_fee }}</div>
+                        <span class="float-end">
+                            <a href="{% url 'customer_detail' pk=customer.pk %}" class="btn btn-info btn-sm" style="font-size: smaller;">Detail</a>
+                            <a href="{% url 'edit_customer' pk=customer.pk %}" class="btn btn-warning btn-sm" style="font-size: smaller;">Edit</a>
+                            <a href="{% url 'delete_customer' pk=customer.pk %}" class="btn btn-danger btn-sm" style="font-size: smaller;">Delete</a>
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No customers available.</p>
+        {% endif %}
+        <a href="{% url 'create_customer' %}" class="btn btn-primary" style="font-size: smaller;">Create New Customer</a>
+    </div>
+{% endblock %}

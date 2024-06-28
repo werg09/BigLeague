@@ -1,0 +1,14 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+  <h2>Create Customer</h2>
+  <form method="post" action="{% url 'create_customer' %}">
+    {% csrf_token %}
+    
+    <!--{{ customer_form.as_p }}-->
+    {{ customer_form.as_p }}
+    
+    <button type="submit">Create Customer</button>
+  </form>
+  <a href="{% url 'customers_list' %}">Go to Customer List</a>
+{% endblock %}

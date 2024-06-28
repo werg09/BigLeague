@@ -1,0 +1,9 @@
+<!-- railcar_detail.html -->
+{% extends 'main/base.html' %}
+
+{% block content %}
+  <h2>Railcar Details</h2>
+  <p>Railcar PK: {{ railcar.pk }}</p>
+  <!-- Display other railcar details as needed -->
+  <a href="{% url 'edit_railcar' pk=railcar.pk %}">Edit Railcar</a>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <style>
+    .text-right {
+        text-align: right;
+    }
+    </style>
+    <div class="container">
+        <h2>Kosher Washes</h2>
+        <a href="{% url 'create_kosher_wash' %}" class="btn btn-primary">Create Kosher Wash</a>
+        {% if kosher_wash %}
+            <ul class="list-group">
+                {% for wash in kosher_wash %}
+                    <li class="list-group-item">
+                        <strong><div>Tank: {{ wash.tank.tank_number }}</div></strong>
+                        <strong><div>Wash Date: {{ wash.wash_date }}</div></strong>
+                        <strong><div>Expiration Date: {{ wash.expiration_date }}</div></strong>
+                        <div class="text-right"><strong>Created At: {{ wash.created_at|date:"F j, Y, g:i a" }}</strong></div>
+
+                        <a href="{% url 'kosherwash_detail' wash.id %}" class="btn btn-info">View Details</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>There are no kosher washes.</p>
+        {% endif %}
+    </div>
+{% endblock %}

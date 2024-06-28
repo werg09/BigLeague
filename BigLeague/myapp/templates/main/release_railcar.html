@@ -1,0 +1,89 @@
+
+
+{% extends 'main/base.html' %}
+
+{% block content %}
+  <h2>Customer Railcar Release</h2>
+  <form method="post" action="{% url 'release_railcar' pk=railcar.pk %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <div id="fileList"></div>
+    
+    <button type="submit" class="btn btn-success">Release</button>
+  </form>
+
+  <!-- Display attachments -->
+  {% if railcar.attachments.all %}
+    <h3>Attached PDFs:</h3>
+    <ul>
+      {% for attachment in railcar.attachments.all %}
+        <li>
+          <a href="{{ attachment.file.url }}" target="_blank">View PDF</a>
+          <!-- Optionally provide a link to download the PDF -->
+          <a href="{{ attachment.file.url }}" download>Download PDF</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <a href="{% url 'railcar_list_in_yard' %}">Cancel</a>
+
+  <script>
+  var selectedFiles = [];  // Array to hold all selected files
+
+  document.getElementById("id_attachments").addEventListener("change", function(e) {
+    var files = e.target.files;
+
+    // Add the newly selected files to the selectedFiles array
+    for (var i = 0; i < files.length; i++) {
+      selectedFiles.push(files[i]);
+    }
+
+    // Clear the current list and add all selected files
+    updateFileList();
+
+    // Clear the file input field so the same file can be selected multiple times
+    e.target.value = null;
+  });
+
+  function updateFileList() {
+    var fileList = document.getElementById("fileList");
+    fileList.innerHTML = "";
+    for (var i = 0; i < selectedFiles.length; i++) {
+      var fileDiv = document.createElement("div");
+      fileDiv.innerHTML = "<p>" + selectedFiles[i].name + 
+                          " <button onclick='removeFile(" + i + ")'>Delete</button></p>";
+      fileList.appendChild(fileDiv);
+    }
+  }
+
+  window.removeFile = function(index) {
+    selectedFiles.splice(index, 1);
+    updateFileList();
+  }
+
+  document.querySelector("form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(e.target);
+    for (var i = 0; i < selectedFiles.length; i++) {
+      formData.append("attachments", selectedFiles[i]);
+    }
+
+    fetch(e.target.action, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+      },
+    }).then(response => {
+      if (response.ok) {
+        window.location = "{% url 'railcar_list_in_yard' %}";
+      } else {
+        alert("Error: " + response.statusText);
+      }
+    });
+  });
+  </script>
+{% endblock %}

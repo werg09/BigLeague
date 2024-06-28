@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    Printable Railcar Details - FerZa
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Railcar Release Details</h1>
+        <hr> <!-- Horizontal line above railcar number -->
+        <div style="margin-bottom: 60px;"> <!-- Add vertical spacing to railcar number -->
+            <p><strong style="font-size: larger;">Railcar Number: {{ railcar.railcar_number }}</strong></p>
+        </div>
+        
+        <p style="margin-bottom: 10px;">Received Date: {{ railcar.received_date }}</p>
+
+        <div style="margin-bottom: 60px;">
+            <p style="margin-bottom: 10px;">Released Date: {{ railcar.released_date }}</p>
+        </div>
+        <p style="margin-bottom: 10px;"><strong>Customer:{{ railcar.customer }}</strong> </p>
+
+        <div style="margin-bottom: 60px;">
+            <p style="margin-bottom: 10px;">Total Days at Terminal: {{ total_days }}</p>
+        </div>
+
+
+
+        <!-- Display demurrage charge -->
+        {% if demurrage_charge %}
+            <p style="margin-bottom: 10px;">Demurrage Charge: ${{ demurrage_charge.demurrage_charge }}</p>
+        {% endif %}
+        <!-- Display entrance fee -->
+        {% if customer.entrance_fee %}
+            <p>Customer Entrance Fee: {{ customer.entrance_fee }}</p>
+        {% endif %}
+        <!-- Add other railcar details as needed -->
+        <!-- Display attachments -->
+        {% if railcar.attachments.all %}
+            <h2>Attachments</h2>
+            <ul>
+                {% for attachment in railcar.attachments.all %}
+                    <li><a href="{{ attachment.file.url }}" target="_blank">{{ attachment.file.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        <!-- Print button -->
+        <style>
+            @media print {
+                .no-print {
+                    display: none;
+                }
+            }
+        </style>
+        
+        <button type="submit" class="btn btn-success no-print" onclick="window.print()">Print</button>
+    </div>
+{% endblock %}
+
+
+

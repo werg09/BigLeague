@@ -1,0 +1,19 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+    Invoice Sent - FerZa
+{% endblock %}
+
+{% block content %}
+<div style="margin: 20px auto; max-width: 600px; font-family: Arial, sans-serif; border: 1px solid #ccc; padding: 20px;">
+    <!-- Back button -->
+    <button type="button" class="btn btn-primary no-print" onclick="window.location.href='{% url 'billing' %}' ">Go Back</button>
+
+    <!-- Message -->
+    <div style="margin-top: 20px;">
+        <h2>Invoice Sent</h2>
+        <p>The invoice has been sent.</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    About - Your App
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 style="font-size: 1.5em;">Railcars Released</h2>
+        {% if railcars %}
+            <ul class="list-group">
+                {% for railcar in railcars %}
+                    {% if railcar.is_released %}
+                        <li class="list-group-item" style="padding: 10px;">
+                            <div style="font-size: 0.9em;">
+                                <div>{{ railcar.released_date }}</div>
+                                <div>{{ railcar.railcar_number }} - - {{ railcar.customer.name }}</div>
+                            </div>
+                            <span class="float-end">
+                                <a href="{% url 'printable_railcar' pk=railcar.pk %}" class="btn btn-info btn-sm" style="font-size: smaller;">Print</a>
+                                {% if request.user.is_superuser %}
+                                    <a href="{% url 'undo_release_railcar' pk=railcar.pk %}" class="btn btn-danger btn-sm" style="font-size: smaller;">Undo-Release</a>
+                                {% endif %}
+                                {% if not railcar.has_invoice %}
+                                    <a href="{% url 'create_invoice' pk=railcar.pk %}" class="btn btn-success btn-sm" style="font-size: smaller;">Make-Invoice</a>
+                                {% endif %}
+                            </span>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No railcars in the yard.</p>
+        {% endif %}
+    </div>
+{% endblock %}

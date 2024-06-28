@@ -1,0 +1,12 @@
+<!-- edit_railcar.html -->
+{% extends 'main/base.html' %}
+
+{% block content %}
+  <h2>Edit Railcar</h2>
+  <form method="post" action="{% url 'edit_railcar' pk=railcar.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+  </form>
+  <a href="{% url 'railcar_detail' pk=railcar.pk %}">Cancel</a>
+{% endblock %}
